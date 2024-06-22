@@ -6,6 +6,7 @@ import ssl
 from bs4 import BeautifulSoup
 import re
 import argparse
+import sys
 
 initial_urls=[
 'https://gis.vgsi.com/lexingtonma/Streets.aspx?Letter=1',
@@ -93,6 +94,8 @@ if __name__=='__main__':
         all_streets += streets
 
     print("Finished Initial URLs")
+    sys.stdout.flush()
+
     all_parcels = []
     for street in all_streets:
         street_url='https://gis.vgsi.com/lexingtonma/'+street.replace(' ', '%20')
@@ -104,6 +107,8 @@ if __name__=='__main__':
         all_parcels += parcels
    
     print("Finished all streets")
+    sys.stdout.flush()
+
     count = 0
     all_addresses = []
     for parcel in all_parcels:
@@ -117,6 +122,7 @@ if __name__=='__main__':
         count += 1
         if count % 100 == 0:
             print("Got address from parcel %s\n" % (parcel))
+            sys.stdout.flush()
 
     with open(args.file, "w") as f:
         for address in all_addresses:
