@@ -6,7 +6,7 @@ import ssl
 import json
 
 def estimateKWH(panellist):
-    numpanels=lenn(panellist)
+    numpanels=len(panellist)
     lowi=numpanels//3
     midi=numpanels//2
     highi=lowi*2
@@ -71,6 +71,7 @@ def get_geo_data(address, client):
         if 'lat' in ll and 'lng' in ll:
             lat=ll['lat']
             long=ll['lng']
+            return (lat, long)
         else:
             return None
     else:
