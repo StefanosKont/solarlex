@@ -38,20 +38,31 @@ def estimateKWH(panellist):
 
 
 def fetch_url(host, url, ssl_context):
-    conn=http.client.HTTPSConnection(host, context=ssl_context)
-    conn.request("GET", url)
-    response=conn.getresponse()
-    data=None
-    if response.status==200:
-        data=response.read()
-    conn.close()
-    return(data)
+    try:
+        conn=http.client.HTTPSConnection(host, context=ssl_context)
+        conn.request("GET", url)
+        response=conn.getresponse()
+        data=None
+        if response.status==200:
+            data=response.read()
+    except http.client.HTTPException as e:
+        print("HTTP error", e, url)
+    except Exception as e:
+        print("error", e, url)
+    finally:
+        if conn:
+            conn.close()
+        return data
+       
+     
 
 def google_solar_data(latitude, longitude, key, ssl_context):
     host = "solar.googleapis.com"
     prefix_url="/v1/buildingInsights:findClosest?"
     final_url=prefix_url+"location.latitude="+str(latitude)+"&location.longitude="+str(longitude)+"&key="+key
     result=fetch_url(host, final_url, ssl_context)
+    if result is None:
+        return None
     d=json.loads(result)
     if 'solarPotential' in d and 'solarPanels' in d['solarPotential']:
         panellist=d['solarPotential']['solarPanels']
