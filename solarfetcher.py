@@ -4,6 +4,7 @@ import argparse
 import http.client
 import ssl
 import json
+import sys
 
 def estimateKWH(panellist):
     numpanels=len(panellist)
@@ -38,11 +39,11 @@ def estimateKWH(panellist):
 
 
 def fetch_url(host, url, ssl_context):
+    data=None
     try:
         conn=http.client.HTTPSConnection(host, context=ssl_context)
         conn.request("GET", url)
         response=conn.getresponse()
-        data=None
         if response.status==200:
             data=response.read()
     except http.client.HTTPException as e:
@@ -116,6 +117,7 @@ if __name__=='__main__':
                 outputstring=format("%s %f %f %d %f %f %f %f\n" % (line, lat, lon, numpanels, low, mid, high, all))
                 print(outputstring)               
                 f2.write(outputstring)
+                sys.stdout.flush()
 
     
     
