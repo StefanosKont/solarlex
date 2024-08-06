@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexington Solar Data</title>
+    <style>
+        .container {
+            width: 100%;
+            overflow: hidden; /* Clear float */
+        }
+        .box {
+            width: 45%; /* Adjust as needed */
+            display: inline-block;
+            margin-right: 3%; /* Adjust spacing between elements */
+            vertical-align: middle; /* Align to middle */
+        }
+    </style>
+</head>
+<body>
+
+<div class="form">
+<center> <h1>Lexington Solar Data</h1> </center>
+    <h2>Enter Address</h2>
+    <pre> Example: For "12 Manor Ln. #23"
+    Enter 12 in the Number box
+    Enter Manor in the Street Name box
+    Enter Ln in the Street Suffix box (no dot)
+    Omit the apartment number as the data is not apartment specific </pre>
+    <br/>
+    <font size="+1">
+    <form id="myForm" action="GetData.aspx" method="POST">
+        <label for="field1">Number:</label>
+        <input type="text" id="Number" name="Number" required><br><br>
+        <label for="field2">Street Name:</label>
+        <input type="text" id="Street" name="Street" required><br><br>
+        <label for="field3">Street Suffix (dr, ave, ln, st, etc.):</label>
+        <input type="text" id="Suffix" name="Suffix" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    </font>
+</body>
+</div>
+
+<br />
+<br />
+<br />
+<hr>
+<hr>
+<div class="results">
+<h2>Solar Analysis Results</h2>
+<font size="+1">
+<p>Estimate for $ADDRESS$ </p>
+<p> You can install a max of $COUNT$ panels.</p>
+<p> Using 33% of max you can generate between $LOW$ and $HIGH$ MWh/year. </p>
+</font>
+</div>
+<br />
+<br />
+<br />
+
+<div class="container">
+     <div class="box">
+        <!-- First element content -->
+        <canvas id="myChart" style="width:100%;max-width:800px"></canvas>
+    </div>
+    <div class="box">
+        <!-- Second element content -->
+        <a href="https://sunroof.withgoogle.com/building/$COORDINATES$/#?f=buy"> <font size="+1"> Google Solar View </font> </a>
+    </div>
+</div>
+
+<script>
+const xValues = ["Low (33%)", "Medium (50%)", "High (66%)", "All (100%)"]
+const yValues = [20.5, 30.2, 36.8, 43.2]
+const ctx = document.getElementById('myChart');
+
+const data = {
+  labels: xValues,
+  datasets: [{
+    label: "Solar Data",
+    backgroundColor: ["red", "green", "blue", "yellow"], 
+    borderColor: 'black',
+    borderWidth: 3,
+    data: yValues,
+  }]
+};
+
+
+const config = {
+  type: 'bar',
+  data: data,
+  options: {
+    legend: {
+      display: true,
+      labels: {
+        fontColor: 'black',
+        fontSize: 22,
+        generateLabels: function(chart) {
+          labels = Chart.defaults.global.legend.labels.generateLabels(chart);
+          for (var key in labels) {
+            labels[key].text = "Solar Data";
+            labels[key].fillStyle = "white";
+            labels[key].strokeStyle = "white";
+          }
+          return labels;
+        }
+      }
+    },
+    scales: {
+      xAxes: [{
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Estimate',
+          fontSize:22
+        },
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+        },
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'MWh',
+          fontSize: 22
+        },
+      }]
+    }
+  },
+};
+  
+new Chart(
+  ctx,
+  config
+);
+</script>
+</body>
+</html>

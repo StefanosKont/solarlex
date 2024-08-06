@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexington Solar Data</title>
+    <style>
+        .container {
+            width: 100%;
+            overflow: hidden; /* Clear float */
+        }
+        .box {
+            width: 45%; /* Adjust as needed */
+            display: inline-block;
+            margin-right: 3%; /* Adjust spacing between elements */
+            vertical-align: middle; /* Align to middle */
+        }
+    </style>
+</head>
+<body>
+
+<div class="form">
+<center> <h1>Lexington Solar Data</h1> </center>
+    <h2>Enter Address</h2>
+    <pre> Example: For "12 Manor Ln. #23"
+    Enter 12 in the Number box
+    Enter Manor in the Street Name box
+    Enter Ln in the Street Suffix box (no dot)
+    Omit the apartment number as the data is not apartment specific </pre>
+    <br/>
+    <font size="+1">
+    <form id="myForm" action="GetData.aspx" method="POST">
+        <label for="field1">Number:</label>
+        <input type="text" id="Number" name="Number" required><br><br>
+        <label for="field2">Street Name:</label>
+        <input type="text" id="Street" name="Street" required><br><br>
+        <label for="field3">Street Suffix (dr, ave, ln, st, etc.):</label>
+        <input type="text" id="Suffix" name="Suffix" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    </font>
+</body>
+</div>
+
+<br />
+<br />
+<br />
+<hr>
+<hr>
+<div class="results">
+<h1>Solar Analysis Results</h1>
+<h2> Address not found </h2>
+
+</body>
+</html>
