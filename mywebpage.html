@@ -26,8 +26,8 @@
     <pre> Example: For "12 Manor Ln. #23"
     Enter 12 in the Number box
     Enter Manor in the Street Name box
-    Enter Ln in the Street Suffix box (no dot)
-    Omit the apartment number as the data is not apartment specific </pre>
+    Enter Ln in the Street Suffix box (no special characters)
+    It is not necessary to enter an apartment number </pre>
     <br/>
     <font size="+1">
     <form id="myForm" action="GetData.aspx" method="POST">
@@ -52,8 +52,9 @@
 <h2>Solar Analysis Results</h2>
 <font size="+1">
 <p>Estimate for $ADDRESS$ </p>
-<p> You can install a max of $COUNT$ panels.</p>
-<p> Using 33% of max you can generate between $LOW$ and $HIGH$ MWh/year. </p>
+<p> Using your best $CONSERVATIVE$ panels you can generate $LOW$ kWh/year. </p>
+<p> Using your best $AVERAGE$ panels you can generate $MID$ kWh/year. </p>
+<p> Using your best $AGGRESSIVE$ panels you can generate $HIGH$ kWh/year. </p>
 </font>
 </div>
 <br />
@@ -67,12 +68,12 @@
     </div>
     <div class="box">
         <!-- Second element content -->
-        <a href="https://sunroof.withgoogle.com/building/$COORDINATES$/#?f=buy" target="_blank"> <font size="+1"> Google Solar View </font> </a>
+        <a href="https://sunroof.withgoogle.com/building/$COORDINATES$/#?f=buy" target="_blank"> <font size="+2"> Google Solar View </font> </a>
     </div>
 </div>
 
 <script>
-const xValues = ["Low (33%)", "Medium (50%)", "High (66%)", "All (100%)"]
+const xValues = ["Conservative", "Average", "Aggressive"]
 const yValues = [$VALUES$]
 const ctx = document.getElementById('myChart');
 
@@ -80,7 +81,7 @@ const data = {
   labels: xValues,
   datasets: [{
     label: "Solar Data",
-    backgroundColor: ["red", "green", "blue", "yellow"], 
+    backgroundColor: ["red", "green", "blue"], 
     borderColor: 'black',
     borderWidth: 3,
     data: yValues,
@@ -124,7 +125,7 @@ const config = {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'MWh',
+          labelString: 'kWh',
           fontSize: 22
         },
       }]
@@ -137,5 +138,8 @@ new Chart(
   config
 );
 </script>
+<font size="+1">
+<p> All data displayed on this website was taken from <a href="https://developers.google.com/maps/documentation/solar" target="_blank"> Google's Solar API</a>, the same place that has the data for Project Sunroof. </p>
+<p> Google's data assumes that the solar panels are 21 square feet and each generate 400 W. </p> </font>
 </body>
 </html>

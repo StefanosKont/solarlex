@@ -31,25 +31,30 @@ class MyServer(BaseHTTPRequestHandler):
         key=key.upper()
         print(key)
         sys.stdout.flush()
+        address=key
         if key in self.solar_data:
             vals=self.solar_data[key]
-            address=key
             count=vals[2]
             coordinates=vals[0]+"/"+vals[1]
-            low=vals[3]
-            high=vals[5]
-            plot_values=", ".join(vals[3:])
+            low="{:,.0f}".format(float(vals[3]))
+            mid="{:,.0f}".format(float(vals[4]))
+            high="{:,.0f}".format(float(vals[5]))
+            
+            plot_values=", ".join(vals[3:6])
             with open("mywebpage.html","r") as f:
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
                 content=f.read()
-                content=content.replace('$COUNT$',count)
-                content=content.replace('$LOW$',low)
-                content=content.replace('$HIGH$',high)
+                content=content.replace('$LOW$',str(low))
+                content=content.replace('$MID$',str(mid))
+                content=content.replace('$HIGH$',str(high))
                 content=content.replace('$ADDRESS$',address)
-                content=content.replace('$VALUES$',plot_values)
+                content=content.replace('$VALUES$',str(plot_values))
                 content=content.replace('$COORDINATES$',coordinates)
+                content=content.replace('$CONSERVATIVE$',str(count//3))
+                content=content.replace('$AVERAGE$',str(count//2))
+                content=content.replace('$AGGRESSIVE$',str(count//3*2))
                 self.wfile.write(bytes(content, "utf-8"))
         else:
             with open("errorpage.html","r") as f:
@@ -57,6 +62,7 @@ class MyServer(BaseHTTPRequestHandler):
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
                 content=f.read()
+                content=content.replace('$ADDRESS$',address)
                 self.wfile.write(bytes(content, "utf-8"))
          
 
@@ -85,8 +91,9 @@ def read_data(filename):
             if index !=-1:
                 key=key[:index-1]
             values = parts[2].split()
+            values[2]=int(values[2])
             for i in range(3, len(values)):
-                values[i]="{:.2f}".format(float(values[i]) /1000.0)
+                values[i]="{:.0f}".format(float(values[i]))
             data[key]=values
     return data
 
