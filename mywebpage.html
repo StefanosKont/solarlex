@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexington Solar Data</title>
+    <title>Lexington Rooftop Solar Energy Generation Estimates</title>
     <style>
         .container {
             width: 100%;
@@ -21,13 +21,15 @@
 <body>
 
 <div class="form">
-<center> <h1>Lexington Solar Data</h1> </center>
+<center> <h1>Lexington Rooftop Solar Energy Generation Estimates</h1> </center>
+<center> <h2>Learn how much solar energy generation potential your roof has.</h2> </center>    
     <h2>Enter Address</h2>
     <pre> Example: For "12 Manor Ln. #23"
     Enter 12 in the Number box
     Enter Manor in the Street Name box
     Enter Ln in the Street Suffix box (no special characters)
-    It is not necessary to enter an apartment number </pre>
+    Do not enter apartment numbers
+    Capitalization does not matter </pre>
     <br/>
     <font size="+1">
     <form id="myForm" action="GetData.aspx" method="POST">
@@ -51,10 +53,10 @@
 <div class="results">
 <h2>Solar Analysis Results</h2>
 <font size="+1">
-<p>Estimate for $ADDRESS$ </p>
-<p> Using your best $CONSERVATIVE$ panels you can generate $LOW$ kWh/year. </p>
-<p> Using your best $AVERAGE$ panels you can generate $MID$ kWh/year. </p>
-<p> Using your best $AGGRESSIVE$ panels you can generate $HIGH$ kWh/year. </p>
+<p>Estimates for $ADDRESS$ </p>
+<p> Installing $AVERAGE$ panels on the sunniest $AVGSQFT$ square feet of your roof you can generate about $LOW$ kWh of electricity per year. </p>
+<p> Installing $LARGE$ panels on the sunniest $LRGSQFT$ square feet of your roof you can generate about $MID$ kWh of electricity per year. </p>
+<p> Installing $AGGRESSIVE$ panels on the sunniest $AGGRSQFT$ square feet of your roof you can generate about $HIGH$ kWh of electricity per year. </p>
 </font>
 </div>
 <br />
@@ -68,19 +70,19 @@
     </div>
     <div class="box">
         <!-- Second element content -->
-        <a href="https://sunroof.withgoogle.com/building/$COORDINATES$/#?f=buy" target="_blank"> <font size="+2"> Google Solar View </font> </a>
+        <a href="https://sunroof.withgoogle.com/building/$COORDINATES$/#?f=buy" target="_blank"> <font size="+2"> Google Project Sunroof View </font> </a>
     </div>
 </div>
 
 <script>
-const xValues = ["Conservative", "Average", "Aggressive"]
+const xValues = [["Average", "(1/3 of roof)"], ["Large", "(1/2 of roof)"], ["Aggressive", "(2/3 of roof)"]]
 const yValues = [$VALUES$]
 const ctx = document.getElementById('myChart');
 
 const data = {
   labels: xValues,
   datasets: [{
-    label: "Solar Data",
+    label: "Estimated Solar Energy Generation",
     backgroundColor: ["red", "green", "blue"], 
     borderColor: 'black',
     borderWidth: 3,
@@ -101,7 +103,7 @@ const config = {
         generateLabels: function(chart) {
           labels = Chart.defaults.global.legend.labels.generateLabels(chart);
           for (var key in labels) {
-            labels[key].text = "Solar Data";
+            labels[key].text = "Estimated Solar Energy Generation";
             labels[key].fillStyle = "white";
             labels[key].strokeStyle = "white";
           }
@@ -114,7 +116,7 @@ const config = {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'Estimate',
+          labelString: 'Solar Installation Size',
           fontSize:22
         },
       }],
@@ -125,7 +127,7 @@ const config = {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: 'kWh',
+          labelString: 'kWh/yr',
           fontSize: 22
         },
       }]
@@ -139,7 +141,8 @@ new Chart(
 );
 </script>
 <font size="+1">
-<p> All data displayed on this website was taken from <a href="https://developers.google.com/maps/documentation/solar" target="_blank"> Google's Solar API</a>, the same place that has the data for Project Sunroof. </p>
-<p> Google's data assumes that the solar panels are 21 square feet and each generate 400 W. </p> </font>
+<p> All data displayed on this webpage was taken from <a href="https://developers.google.com/maps/documentation/solar" target="_blank"> Google's Solar API</a>, the same API used by Google's Project Sunroof. </p>
+<p> Google's data assumes that each solar panel is 21 square feet in size and has a capacity of 400 W. These estimates do not take into consideration specific placement requirements of fire and building officials, which may prevent some sunny border areas of roofs from being used.
+ </p> </font>
 </body>
 </html>
