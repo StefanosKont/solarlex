@@ -1,9 +1,13 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer, ThreadingHTTPServer
 import argparse
 import sys
 
 class MyServer(BaseHTTPRequestHandler):
     solar_data = {}
+
+    def setup(self):
+        BaseHTTPRequestHandler.timeout=5
+        BaseHTTPRequestHandler.setup(self)
 
     def do_GET(self):
         with open("startpage.html","r") as f:
@@ -112,7 +116,7 @@ def main():
     solar_data = read_data(args.file)
 
     MyServer.solar_data=solar_data
-    webServer = HTTPServer((args.domain, args.port), MyServer)
+    webServer = ThreadingHTTPServer((args.domain, args.port), MyServer)
 
     try:
         webServer.serve_forever()
